@@ -1,0 +1,53 @@
+# run zookeeper and kafka as docker services
+version: '2'
+services:
+    zookeeper:
+        build:
+            context: ./sc4-zookeeper
+        image: sc4zookeeper
+        environment:
+            - MYID=1
+            - DELAY=3
+        ports:
+            - 2181:2181
+    kafka-broker:
+        build:
+            context: ./sc4-kafka-broker
+        image: sc4kafka-broker
+        environment:
+            - TOPICS=taxi,testtopic
+            - ZOOKEEPER_SERVERS=zookeeper:2181
+        links:
+            - zookeeper
+        ports:
+            - 9092:9092
+    kafka-maketopic:
+        build:
+            context: ./sc4-kafka-maketopic
+        image: sc4kafka-maketopic
+        environment:
+            - ZOOKEEPER_SERVERS=zookeeper:2181
+            - KAFKA_BROKER=kafka-broker:9092
+        links:
+            - kafka-broker
+    kafka-producer:
+        build:
+            context: ./sc4-kafka-producer
+        image: sc4kafka-producer
+        environment:
+            - ZOOKEEPER_SERVERS=zookeeper:2181
+            - KAFKA_BROKER_LIST=kafka-broker:9092
+        links:
+            - kafka-broker
+        depends_on:
+            - kafka-maketopic
+    kafka-consumer:
+        build:
+            context: ./sc4-kafka-consumer
+        image: sc4kafka-consumer
+        environment:
+            - ZOOKEEPER_SERVERS=zookeeper:2181
+        links:
+            - kafka-broker
+        depends_on:
+            - kafka-maketopic

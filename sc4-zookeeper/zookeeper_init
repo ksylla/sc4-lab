@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+SEC=$DELAY
+
+if [ -n "$SEC" ] ;then
+    echo TEST-DELAY SECONDS $SEC
+    sleep $SEC
+    echo TEST-DELAY SECONDS $SEC elapsed
+    echo try: exec $CMD
+fi
+
+echo try: exec /opt/zookeeper/bin/zkServer.sh start-foreground
+exec /opt/zookeeper/bin/zkServer.sh start-foreground
