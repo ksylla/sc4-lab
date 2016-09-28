@@ -7,13 +7,13 @@ services:
         image: sc4zookeeper
         environment:
             - MYID=1
-            - DELAY=3
+            - DELAY=0
         ports:
             - 2181:2181
     kafka-broker:
         build:
             context: ./sc4-kafka-broker
-        image: sc4kafka-broker
+        image: sc4-kafka-broker
         environment:
             - TOPICS=taxi,testtopic
             - ZOOKEEPER_SERVERS=zookeeper:2181
@@ -24,30 +24,34 @@ services:
     kafka-maketopic:
         build:
             context: ./sc4-kafka-maketopic
-        image: sc4kafka-maketopic
+        image: sc4-kafka-maketopic
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
             - KAFKA_BROKER=kafka-broker:9092
         links:
             - kafka-broker
-    kafka-producer:
+    kafka-cli-producer:
         build:
-            context: ./sc4-kafka-producer
-        image: sc4kafka-producer
+            context: ./sc4-kafka-cli-producer
+        image: sc4-kafka-producer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
             - KAFKA_BROKER_LIST=kafka-broker:9092
         links:
             - kafka-broker
-        depends_on:
-            - kafka-maketopic
-    kafka-consumer:
+    kafka-cli-consumer:
         build:
-            context: ./sc4-kafka-consumer
-        image: sc4kafka-consumer
+            context: ./sc4-kafka-cli-consumer
+        image: sc4-kafka-consumer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:
             - kafka-broker
-        depends_on:
-            - kafka-maketopic
+    fcd-producer:
+        build:
+            context: ./pilot-sc4-kafka-producer
+        image: bde2020/pilot-sc4-fcd-producer
+        environment:
+            - ZOOKEEPER_SERVERS=zookeeper:2181
+        links:
+            - kafka-broker:kafkahost

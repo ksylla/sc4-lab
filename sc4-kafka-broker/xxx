@@ -1,0 +1,17 @@
+
+create-topic() {
+    if [ -z "$1"]  {
+        >&2 FAIL create-topic: require arg1: topic name"
+        exit 1
+    }
+    echo $0 CREATE TOPIC $1
+    /app/bin/kafka-topics.sh --zookeeper $ZOOKEEPER_SERVERS \
+     --partitions 1 --replication-factor 1" \
+     --create --topic $1
+}
+
+get-existing-topics() {
+}
+make-topics-if-absent() {
+}
+

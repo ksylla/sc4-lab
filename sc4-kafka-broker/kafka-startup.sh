@@ -10,6 +10,7 @@ ZKS=$(
 echo $0 await one of $ZKS
 
 # await at least one zookeeper beeing available
+echo $0 ===== AWAIT =====
 while true ;do
     for ZK in $ZKS ;do
         NCDEST=$(
@@ -25,6 +26,34 @@ while true ;do
     >&2 echo "none of $ZOOKEEPER_SERVERS is yet available - waiting"
     sleep 1
 done
+
+echo $0 ===== EXECUTE =====
+
+(   # check for initialization finished
+    echo $0 : check kafka broker at $HOST:$PORT
+    HOST=localhost
+    PORT=9092
+    until nc -z $HOST $PORT ; do
+        >&2 echo $0 "$HOST:$PORT is not yet initialized - waiting"
+        sleep 1
+    done
+    echo kafka broker $HOST:$PORT is available
+    # ensure topics be available / provided
+    # create-topic taxi
+    echo ===== FINISHED =====
+) & # execute parallel
+
+echo $0 : check kafka broker at $HOST:$PORT
+if [ -n "$PORT" -a -n "$HOST" ] ;then
+    until nc -z $HOST $PORT ; do
+        echo waiting for $HOST $PORT
+        >&2 echo "$HOST:$PORT is unavailable - sleeping"
+        sleep 1
+    done
+    echo "$HOST:$PORT is available"
+fi
+
+
 
 echo $0 START KAFKA BROKER
 exec /app/bin/kafka-server-start.sh /app/config/server.properties --override zookeeper.connect=$ZOOKEEPER_SERVERS
