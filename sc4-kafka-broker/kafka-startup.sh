@@ -43,17 +43,5 @@ echo $0 ===== EXECUTE =====
     echo ===== FINISHED =====
 ) & # execute parallel
 
-echo $0 : check kafka broker at $HOST:$PORT
-if [ -n "$PORT" -a -n "$HOST" ] ;then
-    until nc -z $HOST $PORT ; do
-        echo waiting for $HOST $PORT
-        >&2 echo "$HOST:$PORT is unavailable - sleeping"
-        sleep 1
-    done
-    echo "$HOST:$PORT is available"
-fi
-
-
-
 echo $0 START KAFKA BROKER
 exec /app/bin/kafka-server-start.sh /app/config/server.properties --override zookeeper.connect=$ZOOKEEPER_SERVERS
