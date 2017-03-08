@@ -3,10 +3,13 @@
 I am stepwise constructing the pilot sc4 pipeline.
 It is to be published at bde2020 if ready and no longer experimental.
 
+2017-03-08 change to docker 1.13 and docker-compose.yml version 3.0
+    intialisation sequence controlled by healthcheck
+
 ## Precondition
 
 additionally clone pilot-sc4-kafka-producer here.
-The directory pilot-sc4-kafka-producer .gitignore-d.
+The directory pilot-sc4-kafka-producer is .gitignore-d.
 
  ```bash
 git clone https://github.com/big-data-europe/pilot-sc4-kafka-producer.git
