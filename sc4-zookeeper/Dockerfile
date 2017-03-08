@@ -26,10 +26,12 @@ RUN ln -s /opt/"$ZK_VERSION" /opt/zookeeper
 RUN cd /opt/zookeeper/conf \
     && cp -p zoo_sample.cfg zoo.cfg
 
+EXPOSE 2181
+
 COPY zookeeper-startup.sh /
 COPY healthcheck /
 
-# HEALTHCHECK --interval=5s --retries=1 CMD /healthcheck
+HEALTHCHECK --interval=5s --retries=1 CMD /healthcheck
 
 #CMD [ "/opt/zookeeper/bin/zkServer.sh", "start-foreground" ]
 CMD [ "./zookeeper-startup.sh" ]
