@@ -7,8 +7,8 @@ services:
         environment:
             - MYID=1
             - DELAY=0
-        ports:
-            - 2181:2181
+#        ports:
+#            - 2181:2181
     kafka-broker:
         build:
             context: ./sc4-kafka-broker
@@ -20,8 +20,8 @@ services:
         depends_on:
             zookeeper:
                 condition: service_healthy
-        ports:
-            - 9092:9092
+#        ports:
+#            - 9092:9092
     kafka-maketopic:
         build:
             context: ./sc4-kafka-maketopic

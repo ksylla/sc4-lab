@@ -6,4 +6,6 @@ MAINTAINER Karl-Heinz Sylla <karl-heinz.sylla@iais.fraunhofer.de>
 
 COPY kafka-startup.sh /
 
+EXPOSE 9092
+
 CMD [ "./kafka-startup.sh" ]
