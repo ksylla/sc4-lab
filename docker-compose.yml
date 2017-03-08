@@ -4,7 +4,7 @@ services:
     zookeeper:
         build:
             context: ./sc4-zookeeper
-        image: sc4zookeeper
+        image: sc4-zookeeper
         environment:
             - MYID=1
             - DELAY=0
@@ -50,8 +50,14 @@ services:
     fcd-producer:
         build:
             context: ./pilot-sc4-kafka-producer
-        image: bde2020/pilot-sc4-fcd-producer
+        image: ksylla/pilot-sc4-fcd-producer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:
             - kafka-broker:kafkahost
+#    pilot-sc4-fcd-producer:
+#        image: datiaperti/pilot-sc4-fcd-producer:v0.0.1
+#        environment:
+#            - ZOOKEEPER_SERVERS=zookeeper:2181
+#        links:
+#            - kafka-broker:kafkahost

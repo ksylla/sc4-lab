@@ -41,7 +41,7 @@ echo $0 ===== EXECUTE =====
     # ensure topics be available / provided
     # create-topic taxi
     echo ===== FINISHED =====
-) & # execute parallel
+) & # required: execute parallel
 
 echo $0 START KAFKA BROKER
 exec /app/bin/kafka-server-start.sh /app/config/server.properties --override zookeeper.connect=$ZOOKEEPER_SERVERS
