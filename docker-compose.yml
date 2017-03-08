@@ -4,7 +4,6 @@ services:
     zookeeper:
         build:
             context: ./sc4-zookeeper
-        image: sc4-zookeeper
         environment:
             - MYID=1
             - DELAY=0
@@ -13,7 +12,6 @@ services:
     kafka-broker:
         build:
             context: ./sc4-kafka-broker
-        image: sc4-kafka-broker
         environment:
             - TOPICS=taxi,testtopic
             - ZOOKEEPER_SERVERS=zookeeper:2181
@@ -27,7 +25,6 @@ services:
     kafka-maketopic:
         build:
             context: ./sc4-kafka-maketopic
-        image: sc4-kafka-maketopic
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
             - KAFKA_BROKER=kafka-broker:9092
@@ -36,7 +33,6 @@ services:
     kafka-cli-producer:
         build:
             context: ./sc4-kafka-cli-producer
-        image: sc4-kafka-producer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
             - KAFKA_BROKER_LIST=kafka-broker:9092
@@ -45,7 +41,6 @@ services:
     kafka-cli-consumer:
         build:
             context: ./sc4-kafka-cli-consumer
-        image: sc4-kafka-consumer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:
@@ -53,7 +48,6 @@ services:
     fcd-producer:
         build:
             context: ./pilot-sc4-kafka-producer
-        image: ksylla/pilot-sc4-fcd-producer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:

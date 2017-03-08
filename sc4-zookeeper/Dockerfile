@@ -8,6 +8,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install utilities
 RUN apt-get update && apt-get install -y apt-utils vim
 RUN apt-get update && apt-get install -y supervisor dnsutils
+RUN apt-get update && apt-get install -y netcat
 
 # Zookeeper version to be used
 ENV ZK_VERSION zookeeper-3.4.8
@@ -24,7 +25,7 @@ RUN ln -s /opt/"$ZK_VERSION" /opt/zookeeper
 RUN cd /opt/zookeeper/conf \
     && cp -p zoo_sample.cfg zoo.cfg
 
-HEALTHCHECK --interval=5s --retries=1 CMD curl -f http://localhost:2181 || exit 1
+HEALTHCHECK --interval=5s --retries=1 CMD netcat -f localhost 2181 || exit 1
 
 COPY zookeeper-startup.sh /
 
