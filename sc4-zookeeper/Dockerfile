@@ -25,7 +25,7 @@ RUN ln -s /opt/"$ZK_VERSION" /opt/zookeeper
 RUN cd /opt/zookeeper/conf \
     && cp -p zoo_sample.cfg zoo.cfg
 
-HEALTHCHECK --interval=5s --retries=1 CMD netcat -f localhost 2181 || exit 1
+HEALTHCHECK --interval=5s --retries=1 CMD netcat -z localhost 2181 || exit 1
 
 COPY zookeeper-startup.sh /
 
