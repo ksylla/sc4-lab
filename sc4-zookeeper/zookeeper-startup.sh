@@ -3,6 +3,7 @@
 set -e
 
 SEC=$DELAY
+echo this is a zookeeper container statring with delay $DELAY seconds
 
 if [ -n "$DELAY" ] ;then
     echo TEST-DELAY SECONDS $SEC

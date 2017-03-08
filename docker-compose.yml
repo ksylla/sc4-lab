@@ -1,5 +1,5 @@
 # run zookeeper and kafka as docker services
-version: '2'
+version: '2.1'
 services:
     zookeeper:
         build:
@@ -19,6 +19,9 @@ services:
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:
             - zookeeper
+        depends_on:
+            zookeeper:
+                condition: service_healthy
         ports:
             - 9092:9092
     kafka-maketopic:
