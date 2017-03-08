@@ -7,6 +7,11 @@ services:
         environment:
             - MYID=1
             - DELAY=0
+        healthcheck:
+            test: /healthcheck
+            interval: 5s
+            timeout: 4s
+            retries: 2
         ports:
             - 2181:2181
     kafka-broker:
