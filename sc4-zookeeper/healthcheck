@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+netstat -ln | grep -F ':2182 ' | grep -F LISTEN
+exitcode=$?
+echo XXX zookeeper health exitcode: $exitcode
+exit $exitcode
