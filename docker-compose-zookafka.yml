@@ -4,6 +4,8 @@ services:
     zookeeper:
         build:
             context: ./sc4-zookeeper
+        hostname: "zookeeper"
+        container_name: "zookeeper"
         environment:
             - MYID=1
             - DELAY=0
@@ -15,8 +17,6 @@ services:
         environment:
             - TOPICS=taxi,testtopic
             - ZOOKEEPER_SERVERS=zookeeper:2181
-        links:
-            - zookeeper
         depends_on:
             zookeeper:
                 condition: service_healthy

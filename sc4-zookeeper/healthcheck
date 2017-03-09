@@ -2,7 +2,11 @@
 
 set -e
 
-netstat -ln | grep -F ':2182 ' | grep -F LISTEN
-exitcode=$?
-echo XXX zookeeper health exitcode: $exitcode
-exit $exitcode
+#netstat -ln | grep -F ':2181 ' | grep -F LISTEN
+export IMOK=$(echo ruok | nc localhost 2181)
+if [[ "$IMOK" == "imok" ]]; then
+  exit 0
+else
+  echo XXX zookeeper health exitcode: $IMOK
+  exit 1
+fi
