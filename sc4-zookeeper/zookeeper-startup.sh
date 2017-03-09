@@ -3,12 +3,12 @@
 set -e
 
 SEC=$DELAY
-echo this is a zookeeper container statring with delay $DELAY seconds
+echo this is a zookeeper container starting with delay of $DELAY seconds
 
 if [ -n "$DELAY" ] ;then
-    echo TEST-DELAY SECONDS $SEC
+    echo DELAY $SEC SECONDS: sleep $SEC 
     sleep $SEC
-    echo TEST-DELAY SECONDS $SEC elapsed
+    echo DELAY of $SEC seconds elapsed
 fi
 
 echo do: exec /opt/zookeeper/bin/zkServer.sh start-foreground
