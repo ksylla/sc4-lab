@@ -1,0 +1,24 @@
+# run zookeeper and kafka as docker services
+version: '2.1'
+services:
+    zookeeper:
+        build:
+            context: ./sc4-zookeeper
+        environment:
+            - MYID=1
+            - DELAY=0
+        expose:
+            - "2181"
+    kafka-broker:
+        build:
+            context: ./sc4-kafka-broker
+        environment:
+            - TOPICS=taxi,testtopic
+            - ZOOKEEPER_SERVERS=zookeeper:2181
+        links:
+            - zookeeper
+        depends_on:
+            zookeeper:
+                condition: service_healthy
+        expose:
+            - "9092"
