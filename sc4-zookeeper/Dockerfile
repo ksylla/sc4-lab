@@ -31,7 +31,7 @@ EXPOSE 2181
 COPY zookeeper-startup.sh /
 COPY healthcheck /
 
-HEALTHCHECK --interval=5s --retries=1 CMD /healthcheck
+HEALTHCHECK --interval=60s --retries=1 CMD /healthcheck
 
 #CMD [ "/opt/zookeeper/bin/zkServer.sh", "start-foreground" ]
 CMD [ "./zookeeper-startup.sh" ]
