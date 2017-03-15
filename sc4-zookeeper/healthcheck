@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+#netstat -ln | grep -F ':2181 ' | grep -F LISTEN
+export IMOK=$(echo ruok | nc localhost 2181)
+if [[ "$IMOK" == "imok" ]]; then
+  exit 0
+else
+  echo XXX zookeeper health exitcode: $IMOK
+  exit 1
+fi

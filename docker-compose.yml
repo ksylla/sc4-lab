@@ -1,39 +1,43 @@
 # run zookeeper and kafka as docker services
-version: '2'
+version: '2.1'
 services:
     zookeeper:
         build:
             context: ./sc4-zookeeper
-        image: sc4-zookeeper
         environment:
             - MYID=1
             - DELAY=0
+        healthcheck:
+            test: /healthcheck
+            interval: 5s
+            timeout: 4s
+            retries: 2
         expose:
             - "2181"
     kafka-broker:
         build:
             context: ./sc4-kafka-broker
-        image: sc4-kafka-broker
         environment:
-            - TOPICS=taxi,testtopic
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:
             - zookeeper
+        depends_on:
+            zookeeper:
+                condition: service_healthy
         expose:
             - "9092"
     kafka-maketopic:
         build:
             context: ./sc4-kafka-maketopic
-        image: sc4-kafka-maketopic
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
             - KAFKA_BROKER=kafka-broker:9092
+            - TOPICS=taxi,testtopic
         links:
             - kafka-broker
     kafka-cli-producer:
         build:
             context: ./sc4-kafka-cli-producer
-        image: sc4-kafka-producer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
             - KAFKA_BROKER_LIST=kafka-broker:9092
@@ -42,7 +46,6 @@ services:
     kafka-cli-consumer:
         build:
             context: ./sc4-kafka-cli-consumer
-        image: sc4-kafka-consumer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:
@@ -50,14 +53,7 @@ services:
     fcd-producer:
         build:
             context: ./pilot-sc4-kafka-producer
-        image: ksylla/pilot-sc4-fcd-producer
         environment:
             - ZOOKEEPER_SERVERS=zookeeper:2181
         links:
             - kafka-broker:kafkahost
-#    pilot-sc4-fcd-producer:
-#        image: datiaperti/pilot-sc4-fcd-producer:v0.0.1
-#        environment:
-#            - ZOOKEEPER_SERVERS=zookeeper:2181
-#        links:
-#            - kafka-broker:kafkahost

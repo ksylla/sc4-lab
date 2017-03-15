@@ -6,10 +6,12 @@ MAINTAINER Karl-Heinz Sylla <karl-heinz.sylla@iais.fraunhofer.de>
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install utilities
-RUN apt-get update && apt-get install -y apt-utils vim
-RUN apt-get update && apt-get install -y supervisor dnsutils
+# RUN apt-get update && apt-get install -y apt-utils vim
+# RUN apt-get update && apt-get install -y supervisor dnsutils
+# RUN apt-get update && apt-get install -y net-tools
+RUN apt-get update && apt-get install -y netcat
 
-# Download-site and versions to be used
+# Zookeeper version to be used
 ENV ZK_VERSION zookeeper-3.4.8
 
 # Download distribution
@@ -24,7 +26,12 @@ RUN ln -s /opt/"$ZK_VERSION" /opt/zookeeper
 RUN cd /opt/zookeeper/conf \
     && cp -p zoo_sample.cfg zoo.cfg
 
+EXPOSE 2181
+
 COPY zookeeper-startup.sh /
+COPY healthcheck /
+
+HEALTHCHECK --interval=10s --retries=5 CMD /healthcheck
 
 #CMD [ "/opt/zookeeper/bin/zkServer.sh", "start-foreground" ]
 CMD [ "./zookeeper-startup.sh" ]
