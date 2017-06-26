@@ -1,5 +1,5 @@
 # run zookeeper and kafka as docker services
-version: '3.1'
+version: '2.1'
 services:
     zookeeper:
         build:
